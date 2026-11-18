@@ -1,58 +1,59 @@
-# Direct-Mapped Cache Memory using Verilog
+# Cache Memory Design Using Verilog
 
-## Project Overview
-This project implements a simple **Direct-Mapped Cache Memory** using Verilog HDL.
+## Overview
+This project implements a simple Direct-Mapped Cache Memory using Verilog HDL.
 
-The cache stores frequently accessed data from main memory to reduce access time. When the requested data is available in the cache, a cache hit occurs. Otherwise, a cache miss occurs, and the data is fetched from main memory and stored in the cache.
+The design demonstrates how a cache stores frequently accessed data and how the processor can identify cache hits and misses.
 
-## Design Specifications
-- **Main Memory:** 16 locations
-- **Data Width:** 4 bits
-- **Cache Size:** 4 cache lines
-- **Address Width:** 4 bits
-- **Cache Mapping:** Direct-Mapped
-- **Tag Width:** 2 bits
-- **Index Width:** 2 bits
-- **Offset:** Not used (one data value per cache line)
+## Specifications
+- Main Memory: 16 locations
+- Address Width: 4 bits
+- Cache Lines: 4
+- Data Width: 4 bits
+- Mapping Technique: Direct Mapping
+- Valid Bit: Used to identify valid cache entries
+- Tag Comparison: Used to detect cache hits and misses
+
+## Features
+- Cache hit and miss detection
+- Data retrieval from cache
+- Cache line replacement on a miss
+- Valid bit management
+- Hit counter and miss counter
+- Total memory access counter
+- Hit ratio and miss ratio calculation
 
 ## Working Principle
+1. The processor provides a 4-bit memory address.
+2. The address is divided into tag and index fields.
+3. The index selects a cache line.
+4. The valid bit and stored tag are checked.
+5. If the tag matches and the line is valid, a cache hit occurs.
+6. Otherwise, a cache miss occurs, and data is loaded from main memory into the cache.
 
-1. The CPU provides a 4-bit address.
-2. The address is divided into Tag and Index fields.
-3. The Index selects the corresponding cache line.
-4. The Valid bit checks whether the selected cache line contains valid data.
-5. The stored Tag is compared with the requested Tag.
-6. If both Tags match and the Valid bit is set, a **Cache Hit** occurs.
-7. Otherwise, a **Cache Miss** occurs. Data is fetched from main memory and stored in the selected cache line.
+## Performance Calculation
+- Hit Ratio = Hit Count / Total Accesses
+- Miss Ratio = Miss Count / Total Accesses
 
-## Signals
+## Simulation
+The design was tested using a Verilog testbench.
 
-| Signal | Description |
-|---|---|
-| `clk` | Clock input |
-| `reset` | Resets the cache valid bits |
-| `address` | 4-bit memory address |
-| `hit` | Indicates a cache hit |
-| `miss` | Indicates a cache miss |
-| `dout` | 4-bit output data |
+The simulation checks:
+- Cache hit conditions
+- Cache miss conditions
+- Cache line replacement
+- Hit and miss counters
+- Hit and miss ratios
 
 ## Tools Used
 - Verilog HDL
 - EDA Playground
 - Icarus Verilog
-- EPWave (Waveform Viewer)
+- EPWave
 
-## Simulation and Testing
-
-The design is tested using a Verilog testbench.
-
-The testbench verifies:
-- Initial cache miss
-- Cache hit for a repeated address
-- Cache miss due to Tag mismatch
-- Cache line replacement
-- Reading updated data after replacement
-
-## Project Files
+## Project Structure
 - `cache.v` – Cache memory design
 - `tb.v` – Testbench for simulation
+
+## Result
+The cache memory design was successfully simulated and tested for different memory access patterns. Hit and miss statistics were also calculated using the testbench.
