@@ -4,6 +4,8 @@ module tb();
   wire hit,miss;
   wire [3:0]dout;
   
+  real hit_ratio, miss_ratio;
+  
   cache uut(.clk(clk),.reset(reset),.address(address),.hit(hit),.miss(miss),.dout(dout));
   
   always #5 clk = ~clk;
@@ -52,6 +54,16 @@ module tb();
 	@(posedge clk);#1;
 	display;
     
+    $display("Hit Count = %0d",uut.hit_count);
+	$display("Miss Count = %0d",uut.miss_count);
+    $display("Total Count = %0d",uut.total_count);
+    
+    hit_ratio = (uut.hit_count * 1.0) / uut.total_count;
+	miss_ratio = (uut.miss_count * 1.0) / uut.total_count;
+
+    $display("Hit Ratio = %0.2f%%",hit_ratio*100);
+    $display("Miss Ratio = %0.2f%%",miss_ratio*100);
+    #5;
     
     $finish;
   end
