@@ -7,6 +7,8 @@ module cache(input clk,reset,
   reg [3:0]cache[0:3];
   reg [3:0]valid;
   reg [1:0]stored_tag[0:3];
+  integer hit_count,miss_count,total_count;
+  
   
   initial begin
     main_memory[0]  = 4'b0001;
@@ -36,6 +38,9 @@ module cache(input clk,reset,
       hit <= 1'b0;
       miss <= 1'b0;
       dout <= 4'b0000;
+      hit_count <= 0;
+      miss_count <= 0;
+      total_count <= 0;
     end
     
     else begin
@@ -48,18 +53,24 @@ module cache(input clk,reset,
             cache[0] <= main_memory[address];
             dout <= main_memory[address];
             valid[0] <= 1'b1;
+            miss_count <= miss_count + 1;
+            total_count <= total_count + 1;
           end
           
           else if(valid[0] == 1) begin
             if(address[3:2] == stored_tag[0]) begin
               dout <= cache[0];
+              hit_count <= hit_count + 1;
+              total_count <= total_count + 1;
               hit <= 1'b1;
             end
             else begin
               miss <= 1'b1;
+              miss_count <= miss_count + 1;
            	  stored_tag[0] <= address[3:2];
               cache[0] <= main_memory[address];
               dout <= main_memory[address];
+              total_count <= total_count + 1;
             end
           end
         end
@@ -67,6 +78,8 @@ module cache(input clk,reset,
         2'b01 : begin
           if(valid[1] == 1'b0) begin
             miss <= 1'b1;
+            miss_count <= miss_count + 1;
+            total_count <= total_count + 1;
             stored_tag[1] <= address[3:2];
             cache[1] <= main_memory[address];
             dout <= main_memory[address];
@@ -77,9 +90,13 @@ module cache(input clk,reset,
             if(address[3:2] == stored_tag[1]) begin
               dout <= cache[1];
               hit <= 1'b1;
+              hit_count <= hit_count + 1;
+              total_count <= total_count + 1;
             end
             else begin
               miss <= 1'b1;
+              miss_count <= miss_count + 1;
+              total_count <= total_count + 1;
               stored_tag[1] <= address[3:2];
               cache[1] <= main_memory[address];
               dout <= main_memory[address];
@@ -90,6 +107,8 @@ module cache(input clk,reset,
         2'b10 : begin
           if(valid[2] == 1'b0) begin
             miss <= 1'b1;
+            miss_count <= miss_count + 1;
+            total_count <= total_count + 1;
             stored_tag[2] <= address[3:2];
             cache[2] <= main_memory[address];
             dout <= main_memory[address];
@@ -100,11 +119,15 @@ module cache(input clk,reset,
             if(address[3:2] == stored_tag[2]) begin
               dout <= cache[2];
               hit <= 1'b1;
+              hit_count <= hit_count + 1;
+              total_count <= total_count + 1;
             end
             else begin
               miss <= 1'b1;
+              miss_count <= miss_count + 1;
               stored_tag[2] <= address[3:2];
               cache[2] <= main_memory[address];
+              total_count <= total_count + 1;
               dout <= main_memory[address];
             end
           end
@@ -113,6 +136,8 @@ module cache(input clk,reset,
         2'b11 : begin
           if(valid[3] == 1'b0) begin
             miss <= 1'b1;
+            miss_count <= miss_count + 1;
+            total_count <= total_count + 1;
             stored_tag[3] <= address[3:2];
             cache[3] <= main_memory[address];
             dout <= main_memory[address];
@@ -123,9 +148,13 @@ module cache(input clk,reset,
             if(address[3:2] == stored_tag[3]) begin
               dout <= cache[3];
               hit <= 1'b1;
+              hit_count <= hit_count + 1;
+              total_count <= total_count + 1;
             end
             else begin
               miss <= 1'b1;
+              miss_count <= miss_count + 1;
+              total_count <= total_count + 1;
               stored_tag[3] <= address[3:2];
               cache[3] <= main_memory[address];
               dout <= main_memory[address];
